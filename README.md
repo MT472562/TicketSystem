@@ -1,5 +1,4 @@
 # 入退場管理システム(TicketSystem)
-![名称未設定-3.png](..%2F..%2FDesktop%2F%E5%90%8D%E7%A7%B0%E6%9C%AA%E8%A8%AD%E5%AE%9A-3.png)
 ## 目次
 
 1. [概要](#概要)
