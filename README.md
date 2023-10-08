@@ -1,4 +1,6 @@
 # 入退場管理システム(TicketSystem)
+<img src="https://repository-images.githubusercontent.com/702109092/0e80e24e-792b-44af-8815-0568e4ba3f90">  
+
 ## 目次
 
 1. [概要](#概要)
