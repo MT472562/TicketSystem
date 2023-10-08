@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <title>テーブルの作成</title>
+</head>
+<body style="text-align: center">
+<header>
+    <p id="lastUpdate">最後の更新: </p>
+    <a href="/welcome">
+        <button class="custom-button">入退場管理</button>
+    </a>
+</header>
+<table style="width: 80% ;">
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>名前</th>
+        <th>Ticket ID</th>
+        <th>人数</th>
+        <th>Status</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for row in table_data %}
+    <tr>
+        <td>{{ row[0] }}</td>
+        <td>{{ row[1] }}</td>
+        <td>{{ row[2] }}</td>
+        <td>{{ row[3] }}</td>
+        <td>{{ row[4] }}</td>
+    </tr>
+    {% endfor %}
+    </tbody>
+</table>
+<style>
+    /* デスクトップ用スタイル */
+    header {
+        height: 50px;
+        background-color: #0074e4;
+        color: #fff;
+        padding: 10px;
+        text-align: center;
+        position: sticky;
+        top: 0;
+        z-index: 100;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .custom-button {
+        display: inline-block;
+        padding: 10px 20px;
+        background-color: #3cc4ff;
+        color: #fff;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        text-decoration: none;
+        font-size: 16px;
+        transition: background-color 0.3s ease;
+    }
+
+    .custom-button:hover {
+        background-color: #0059b3;
+    }
+
+    table {
+        width: 80%;
+        border-collapse: collapse;
+        margin: 20px auto;
+    }
+
+    th {
+        background-color: #f2f2f2;
+        font-weight: bold;
+        text-align: center;
+        padding: 8px;
+        border: 1px solid #ddd;
+    }
+
+    td {
+        text-align: center;
+        padding: 8px;
+        border: 1px solid #ddd;
+    }
+
+    tr:nth-child(even) {
+        background-color: #f5f5f5;
+    }
+
+    /* モバイル用スタイル（最大幅 768px） */
+    @media (max-width: 768px) {
+        header {
+            padding: 5px;
+            height: auto;
+            flex-direction: column;
+            align-items: flex-start;
+            text-align: left;
+        }
+
+        .custom-button {
+            display: block;
+            width: 100%;
+            margin-top: 10px;
+        }
+    }
+</style>
+<script>
+    // ページが読み込まれた時刻を記録
+    const loadTime = new Date();
+
+    // スクロール位置を記憶
+    window.addEventListener('scroll', function () {
+        localStorage.setItem('scrollPosition', window.scrollY);
+    });
+
+    // スクロール位置を復元
+    window.addEventListener('load', function () {
+        const scrollPosition = localStorage.getItem('scrollPosition');
+        if (scrollPosition) {
+            window.scrollTo(0, parseInt(scrollPosition));
+        }
+
+        // 10秒ごとにページを再読み込み
+        setInterval(function () {
+            location.reload();
+        }, 2000); // 10秒（10000ミリ秒）ごとにリロード
+
+        // 最後の更新時刻を表示
+        const lastUpdateElement = document.getElementById('lastUpdate');
+        setInterval(function () {
+            const currentTime = new Date();
+            const secondsAgo = Math.floor((currentTime - loadTime) / 1000);
+            lastUpdateElement.textContent = `最後の更新: ${secondsAgo}秒前`;
+        }, 1000); // 1秒（1000ミリ秒）ごとに更新時刻を更新
+    });
+</script>
+</body>
+</html>

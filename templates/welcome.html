@@ -1,13 +1,26 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ja">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>読み取り</title>
 </head>
 <body>
+<div id="over" style="display: none">
+
+</div>
 <h1>{{qr_msg}}</h1>
 <video id="camera-preview" autoplay></video>
+<br>
+<label for="status">ステータスを選択してください:</label>
+<select id="status" name="status">
+    <option value="入場">入場</option>
+    <option value="一時退場">一時退場</option>
+    <option value="退場">退場</option>
+</select>
+<h3 id="reed-msg"></h3>
+<h4 id="data"></h4>
+<h4 id="data-1"></h4>
 <script type="text/javascript" src="https://rawgit.com/schmich/instascan-builds/master/instascan.min.js"></script>
 <script>
     const video = document.getElementById('camera-preview');
@@ -15,16 +28,44 @@
 
     // QRコードが読み取られたときの処理
     scanner.addListener('scan', function (content) {
-        console.log('QR Code Data:', content);
-        // ここでQRコードのデータを処理するためのロジックを追加できます
-        document.getElementById("audio-yes").play()
-    });
+        const statusSelect = document.getElementById('status');
+        var selectedIndex = statusSelect.selectedIndex;
+        var selectedValue = statusSelect.options[selectedIndex].value;
+        var postData = {
+            status: selectedValue,
+            key: content
+        };
+        var xhr = new XMLHttpRequest();
+        xhr.open("POST", "/status_update", true);
+        xhr.setRequestHeader("Content-Type", "application/json");
+        xhr.onload = function () {
+            if (xhr.status === 200) {
+                var response = JSON.parse(xhr.responseText);
+                if (response["status"] == 404) {
+                    document.getElementById("audio-no").play()
+                    document.getElementById("reed-msg").textContent = response["msg"];
+                    document.getElementById("data").textContent = ``;
+                    document.getElementById("data-1").textContent=``;
+                } else if (response["status"] == 200) {
+                    document.getElementById("audio-yes").play()
+                    document.getElementById("reed-msg").textContent = response["msg"];
+                    const name = response["data"][0][1]
+                    const ppl = response["data"][0][3]
+                    document.getElementById("data").textContent = `お名前: ${name} 様`;
+                    document.getElementById("data-1").textContent=`人数: ${ppl} 名様`;
+                }
 
-    // カメラを起動してQRコードの読み取りを開始
+            } else {
+                alert("サーバーでエラーが発生しました。")
+            }
+        };
+        xhr.send(JSON.stringify(postData));
+
+    });
     Instascan.Camera.getCameras()
         .then(function (cameras) {
             if (cameras.length > 0) {
-                scanner.start(cameras[0]); // カメラを選択してQRコードの読み取りを開始
+                scanner.start(cameras[0]);
             } else {
                 console.error('利用可能なカメラがありません');
             }
@@ -32,13 +73,33 @@
         .catch(function (error) {
             console.error('カメラのアクセスに失敗しました:', error);
         });
+
+    const statusSelect = document.getElementById('status');
+
+    statusSelect.addEventListener('change', () => {
+        var selectedIndex = statusSelect.selectedIndex;
+        var selectedValue = statusSelect.options[selectedIndex].value;
+        if (selectedValue == "入場") {
+            document.getElementById("camera-preview").style.border = "#84ff00 10px solid"
+            document.body.style.backgroundColor = "#deffc3"
+        } else if (selectedValue === "一時退場") {
+            document.getElementById("camera-preview").style.border = "#ff8c00 10px solid";
+            document.body.style.backgroundColor = "#ffe4bb"
+        } else if (selectedValue === "退場") {
+            document.getElementById("camera-preview").style.border = "#ff0000 10px solid";
+            document.body.style.backgroundColor = "#ffc8c8"
+        }
+    })
+    ;
 </script>
 <audio id="audio-yes" style="display: none" src="templates/audio.mp3"></audio>
+<audio id="audio-no" style="display: none" src="templates/error_audio.mp3"></audio>
 </body>
 <style>
     body {
         font-family: Arial, sans-serif;
         text-align: center;
+        background-color: #deffc3;
     }
 
     h1 {
@@ -50,7 +111,40 @@
         width: 80%;
         max-width: 400px;
         margin: 20px auto;
-        border: 2px solid #333;
+        border: #84ff00 10px solid;
+        border-radius: 1rem;
     }
+
+    #over {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(21, 32, 44, 0.7);
+        z-index: 99;
+    }
+
+    label {
+        font-size: 1.2rem;
+    }
+
+    select {
+        padding: 10px;
+        font-size: 1rem;
+        border: 2px solid #ccc;
+        border-radius: 5px;
+    }
+
+    select:focus {
+        outline: none;
+        border-color: #007bff;
+    }
+
 </style>
+
+
 </html>

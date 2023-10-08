@@ -1,10 +1,10 @@
 {
-  "db_path": "db.db",
   "Ticket_Name": "TEST-TICKET",
-  "max_ppl": 5,
+  "db_path": "db.db",
   "input_form_msg": "チケット発行システム",
-  "qr_file_path": "qr",
+  "max_ppl": 5,
   "no_name": "名無し",
   "no_ppl": 1,
+  "qr_file_path": "qr",
   "qr_msg": "QRコードをかざしてください"
 }
