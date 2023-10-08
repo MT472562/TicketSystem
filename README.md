@@ -4,7 +4,7 @@
 1. [概要](#概要)
 2. [環境ファイル設定](#環境ファイル設定)
 3. [モードの種類](#モードの種類)
-
+4.[OSSについて](#OSSについて)
 ---
 
 ## 概要
@@ -81,8 +81,21 @@
 | 退場モード   | 3     |
 
 ---
-
-
+## OSSについて
+### 実行確認環境
+Max OS 14.0 Sonoma  
+Python 3.11
+### LICENCE
+このプロジェクトにはMIT LICENCEを使用しています。
+詳細は[LICENCE](https://github.com/MT472562/TicketSystem/blob/main/LICENSE)をご確認ください
+### 問い合わせ
+なにか不明点などがございましたら、[issues](https://github.com/MT472562/TicketSystem/issues)
+または、[X(旧Twitter)](https://twitter.com/magirawashili)までお問い合わせください。
+---
+最後に
+ここまで読んでいただいた方ありがとうございます。
+思いつきで適当に始めちゃったプロジェクトなのでコードはぐちゃぐちゃですし、ホンマに見にくいと思うので堪忍してください
+皆様の今後の発展をお祈り申し上げます。
 
 
 
