@@ -6,6 +6,9 @@
     <title>新規登録</title>
 </head>
 <body>
+<a href="/view">
+    <button class="custom-button">管理ページへ移動</button>
+</a>
 <form id="postForm" method="POST" action="/api_new_data">
     <h3>{{input_form_msg}}</h3>
     <label for="name">お名前:</label>
@@ -73,5 +76,27 @@
         background-color: #0056b3;
     }
 
+</style>
+<style>
+    /* ボタンのスタイル */
+    .custom-button {
+        padding: 10px 20px;
+        background-color: #0caaff;
+        color: #fff;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        text-decoration: none;
+        font-size: 16px;
+        transition: background-color 0.3s ease;
+        position: fixed;
+        bottom: 20px; /* ボタンの下端からの距離 */
+        right: 20px; /* ボタンの右端からの距離 */
+    }
+
+    /* ボタンのホバーエフェクト */
+    .custom-button:hover {
+        background-color: #0059b3;
+    }
 </style>
 </html>

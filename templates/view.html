@@ -27,7 +27,17 @@
         <td>{{ row[1] }}</td>
         <td>{{ row[2] }}</td>
         <td>{{ row[3] }}</td>
+        {% if row[4] == "入場中" %}
+        <td style="background-color: #deffc3">{{ row[4] }}</td>
+        {% elif row[4] == "一時退場中" %}
+        <td style="background-color: #ffe4bb">{{ row[4] }}</td>
+        {% elif row[4] == "退場済み" %}
+        <td style="background-color: #ffc8c8">{{ row[4] }}</td>
+        {% else %}
         <td>{{ row[4] }}</td>
+        {% endif %}
+
+
     </tr>
     {% endfor %}
     </tbody>
@@ -122,10 +132,9 @@
             window.scrollTo(0, parseInt(scrollPosition));
         }
 
-        // 10秒ごとにページを再読み込み
         setInterval(function () {
             location.reload();
-        }, 2000); // 10秒（10000ミリ秒）ごとにリロード
+        }, 3500);
 
         // 最後の更新時刻を表示
         const lastUpdateElement = document.getElementById('lastUpdate');
