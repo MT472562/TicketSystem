@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>新規登録</title>
+</head>
+<body>
+<form id="postForm" method="POST" action="/api_new_data">
+    <h3>{{input_form_msg}}</h3>
+    <label for="name">お名前:</label>
+    <input type="text" id="name" name="name" required placeholder="お名前を入力してください"><br><br>
+    <label for="ppl">ご来場になられる人数:</label>
+    <input type="number" id="ppl" name="ppl" min="0" step="1" max="{{max_ppl}}" min="1"
+           placeholder="人数を入力してください"><br><br>
+
+
+    <input type="submit" value="送信">
+</form>
+
+
+<div id="response"></div>
+</body>
+<style>
+    /* ページ全体に対するスタイル */
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #f5f5f5;
+        margin: 0;
+        padding: 0;
+        text-align: center;
+    }
+
+    /* フォームに対するスタイル */
+    #postForm {
+        width: 350px;
+        margin: 0 auto;
+        margin-top: 10%;
+        background-color: #ffffff;
+        padding: 20px;
+        border-radius: 5px;
+        box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    /* ラベルに対するスタイル */
+    label {
+        display: block;
+        margin-bottom: 10px;
+    }
+
+    /* 入力フィールドに対するスタイル */
+    input[type="text"], input[type="number"] {
+        width: 90%;
+        padding: 10px;
+        margin-bottom: 15px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+    }
+
+    /* 送信ボタンに対するスタイル */
+    input[type="submit"] {
+        background-color: #007bff;
+        color: #fff;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 16px;
+    }
+
+    /* 送信ボタンにホバー時のスタイル */
+    input[type="submit"]:hover {
+        background-color: #0056b3;
+    }
+
+</style>
+</html>

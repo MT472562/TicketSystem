@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>読み取り</title>
+</head>
+<body>
+<h1>{{qr_msg}}</h1>
+<video id="camera-preview" autoplay></video>
+<script type="text/javascript" src="https://rawgit.com/schmich/instascan-builds/master/instascan.min.js"></script>
+<script>
+    const video = document.getElementById('camera-preview');
+    const scanner = new Instascan.Scanner({video});
+
+    // QRコードが読み取られたときの処理
+    scanner.addListener('scan', function (content) {
+        console.log('QR Code Data:', content);
+        // ここでQRコードのデータを処理するためのロジックを追加できます
+        document.getElementById("audio-yes").play()
+    });
+
+    // カメラを起動してQRコードの読み取りを開始
+    Instascan.Camera.getCameras()
+        .then(function (cameras) {
+            if (cameras.length > 0) {
+                scanner.start(cameras[0]); // カメラを選択してQRコードの読み取りを開始
+            } else {
+                console.error('利用可能なカメラがありません');
+            }
+        })
+        .catch(function (error) {
+            console.error('カメラのアクセスに失敗しました:', error);
+        });
+</script>
+<audio id="audio-yes" style="display: none" src="templates/audio.mp3"></audio>
+</body>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        text-align: center;
+    }
+
+    h1 {
+        font-size: 24px;
+        margin-top: 20px;
+    }
+
+    #camera-preview {
+        width: 80%;
+        max-width: 400px;
+        margin: 20px auto;
+        border: 2px solid #333;
+    }
+</style>
+</html>
