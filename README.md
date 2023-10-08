@@ -90,11 +90,12 @@ Python 3.11
 詳細は[LICENCE](https://github.com/MT472562/TicketSystem/blob/main/LICENSE)をご確認ください
 ### 問い合わせ
 なにか不明点などがございましたら、[issues](https://github.com/MT472562/TicketSystem/issues)
-または、[X(旧Twitter)](https://twitter.com/magirawashili)までお問い合わせください。
----
-最後に
-ここまで読んでいただいた方ありがとうございます。
-思いつきで適当に始めちゃったプロジェクトなのでコードはぐちゃぐちゃですし、ホンマに見にくいと思うので堪忍してください
+または、[X(旧Twitter)](https://twitter.com/magirawashili)までお問い合わせください。  
+
+
+最後に  
+ここまで読んでいただいた方ありがとうございます。  
+思いつきで適当に始めちゃったプロジェクトなのでコードはぐちゃぐちゃですし、ホンマに見にくいと思うので堪忍してください  
 皆様の今後の発展をお祈り申し上げます。
 
 
