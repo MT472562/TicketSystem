@@ -1,18 +1,22 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=M+PLUS+1p&family=Noto+Sans+JP:wght@300;400;500&family=Zen+Maru+Gothic:wght@400;700&display=swap"
+          rel="stylesheet">
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>読み取り</title>
 </head>
 <body>
-<div id="over" style="display: none">
-
-</div>
 <h1>{{qr_msg}}</h1>
 <video id="camera-preview" autoplay></video>
 <br>
-<p style="color: #7e7e7e">キーボード上で1~3の数字キーでモードを切り替えれます</p>
+<label for="checkbox" style="zoom: 60%">グレースケール化</label>
+<input type="checkbox" id="checkbox">
+<p style="color: #232323">キーボード上で1~3の数字キーでモードを切り替えれます</p>
 <label for="status">モードを選択してください:</label>
 <select id="status" name="status">
     <option value="入場">入場(1)</option>
@@ -22,6 +26,8 @@
 <h3 id="reed-msg"></h3>
 <h4 id="data"></h4>
 <h4 id="data-1"></h4>
+<div id="over">
+</div>
 <script type="text/javascript" src="https://rawgit.com/schmich/instascan-builds/master/instascan.min.js"></script>
 <script>
     const video = document.getElementById('camera-preview');
@@ -80,15 +86,19 @@
     statusSelect.addEventListener('change', () => {
         var selectedIndex = statusSelect.selectedIndex;
         var selectedValue = statusSelect.options[selectedIndex].value;
+        const body = document.body;
         if (selectedValue == "入場") {
-            document.getElementById("camera-preview").style.border = "#84ff00 10px solid"
-            document.body.style.backgroundColor = "#deffc3"
+            body.style.backgroundImage = 'url(templates/welcome_mode1_bk.svg)';
+            body.style.backgroundSize = 'cover';
+            body.style.backgroundRepeat = 'no-repeat';
         } else if (selectedValue === "一時退場") {
-            document.getElementById("camera-preview").style.border = "#ff8c00 10px solid";
-            document.body.style.backgroundColor = "#ffe4bb"
+            body.style.backgroundImage = 'url(templates/welcome_mode2_bk.svg)';
+            body.style.backgroundSize = 'cover';
+            body.style.backgroundRepeat = 'no-repeat';
         } else if (selectedValue === "退場") {
-            document.getElementById("camera-preview").style.border = "#ff0000 10px solid";
-            document.body.style.backgroundColor = "#ffc8c8"
+            body.style.backgroundImage = 'url(templates/welcome_mode3_bk.svg)';
+            body.style.backgroundSize = 'cover';
+            body.style.backgroundRepeat = 'no-repeat';
         }
     })
     ;
@@ -96,30 +106,57 @@
 <script>
     document.addEventListener("keydown", function (event) {
         var selectElement = document.getElementById("status");
-
+        const body = document.body;
         if (event.keyCode === 49 || event.key === "1") {
-            document.getElementById("camera-preview").style.border = "#84ff00 10px solid"
-            document.body.style.backgroundColor = "#deffc3"
+            body.style.backgroundImage = 'url(templates/welcome_mode1_bk.svg)';
+            body.style.backgroundSize = 'cover';
+            body.style.backgroundRepeat = 'no-repeat';
             selectElement.selectedIndex = 0;
         } else if (event.keyCode === 50 || event.key === "2") {
-            document.getElementById("camera-preview").style.border = "#ff8c00 10px solid";
-            document.body.style.backgroundColor = "#ffe4bb"
+            body.style.backgroundImage = 'url(templates/welcome_mode2_bk.svg)';
+            body.style.backgroundSize = 'cover';
+            body.style.backgroundRepeat = 'no-repeat';
             selectElement.selectedIndex = 1;
         } else if (event.keyCode === 51 || event.key === "3") {
-            document.getElementById("camera-preview").style.border = "#ff0000 10px solid";
-            document.body.style.backgroundColor = "#ffc8c8"
+            body.style.backgroundImage = 'url(templates/welcome_mode3_bk.svg)';
+            body.style.backgroundSize = 'cover';
+            body.style.backgroundRepeat = 'no-repeat';
             selectElement.selectedIndex = 2;
         }
     });
+
+    // チェックボックスとビデオ要素を取得
+    const checkbox = document.getElementById('checkbox');
+    // const video = document.getElementById('camera-preview');
+
+    // チェックボックスの状態を監視
+    checkbox.addEventListener('change', function () {
+        if (checkbox.checked) {
+            // チェックが入っている場合、ビデオにグレースケールスタイルを適用
+            video.classList.add('grayscale');
+        } else {
+            // チェックが入っていない場合、グレースケールスタイルを解除
+            video.classList.remove('grayscale');
+        }
+    });
+
 </script>
 <audio id="audio-yes" style="display: none" src="templates/audio.mp3"></audio>
 <audio id="audio-no" style="display: none" src="templates/error_audio.mp3"></audio>
 </body>
 <style>
+    * {
+        font-family: 'M PLUS 1p', sans-serif;
+        font-family: 'Noto Sans JP', sans-serif;
+        font-family: 'Zen Maru Gothic', sans-serif;
+    }
     body {
         font-family: Arial, sans-serif;
         text-align: center;
-        background-color: #deffc3;
+        background-image: url(templates/welcome_mode1_bk.svg);
+        background-size: cover;
+        background-repeat: no-repeat;
+
     }
 
     h1 {
@@ -131,9 +168,15 @@
         width: 80%;
         max-width: 400px;
         margin: 20px auto;
-        border: #84ff00 10px solid;
         border-radius: 1rem;
+        z-index: 8;
     }
+
+    /* グレースケールスタイル */
+    .grayscale {
+        filter: grayscale(100%);
+    }
+
 
     #over {
         display: flex;
@@ -144,8 +187,8 @@
         left: 0;
         width: 100%;
         height: 100%;
-        background-color: rgba(21, 32, 44, 0.7);
-        z-index: 99;
+        background-color: rgba(256, 256, 256, 0.2);
+        z-index: -1; /* 他の要素の z-index よりも小さい値を設定 */
     }
 
     label {
