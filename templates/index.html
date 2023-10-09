@@ -13,7 +13,7 @@
 <a href="/view">
     <button class="custom-button">管理ページへ移動</button>
 </a>
-<form id="postForm" method="POST" action="/api_new_data">
+<form id="postForm" method="POST" action="/api_new_data/js">
     <h3>{{input_form_msg}}</h3>
     <label for="name">お名前:</label>
     <input type="text" id="name" name="name" required placeholder="お名前を入力してください"><br><br>
@@ -54,7 +54,7 @@
         background-color: rgba(255, 255, 255, 0.7);
         padding: 20px;
         border-radius: 5px;
-        box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.2);
     }
 
     /* ラベルに対するスタイル */
@@ -71,6 +71,7 @@
         border: 1px solid #ccc;
         border-radius: 4px;
         background-color: rgba(255, 255, 255, 0.7);
+        box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.2);
     }
 
     /* 送信ボタンに対するスタイル */
@@ -82,6 +83,7 @@
         border-radius: 4px;
         cursor: pointer;
         font-size: 16px;
+        box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.2);
     }
 
     /* 送信ボタンにホバー時のスタイル */
@@ -105,6 +107,7 @@
         position: fixed;
         bottom: 20px; /* ボタンの下端からの距離 */
         right: 20px; /* ボタンの右端からの距離 */
+        box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.2);
     }
 
     /* ボタンのホバーエフェクト */

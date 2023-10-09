@@ -15,8 +15,9 @@ qr_file_path = config["qr_file_path"]
 input_form_msg = config["input_form_msg"]
 no_name = config["no_name"]
 no_ppl = config["no_ppl"]
-qr_msg= config["qr_msg"]
+qr_msg = config["qr_msg"]
 app = Flask(__name__, static_folder='./templates')
+
 
 @app.errorhandler(404)
 def error_404(error):
@@ -25,21 +26,37 @@ def error_404(error):
                            error_detail="We couldn't locate the page you were looking for, and it's possible that the page has been removed. Please feel free to get in touch with our support team for further assistance.",
                            error_msg_jp="お探しのページが見つかりませんでした")
 
+
 @app.route("/")
 def index():
     return render_template("index.html",
                            max_ppl=max_ppl, input_form_msg=input_form_msg)
 
 
-@app.route("/api_new_data", methods=["POST"])
-def api_new_data():
-    data = request.form
-    name = data.get("name")
+@app.route("/api_new_data/<mode>", methods=["POST"])
+def api_new_data(mode):
+    if mode == "js":
+        data = request.form
+        name = data.get("name")
+        ppl = data.get("ppl")
+    elif mode == "api":
+        data = request.json
+        name = data.get("name")
+        ppl = data.get("ppl")
+
+    try:
+        ppl = int(ppl)
+    except:
+        ppl = 0
+
     if name == "":
         name = no_name
-    ppl = data.get("ppl")
     if ppl == 0 or ppl == "":
         ppl = no_ppl
+
+    if int(ppl) > int(max_ppl):
+        ppl = max_ppl
+
     conn = sqlite3.connect(db_path)
     cursor = conn.cursor()
     cursor.execute("SELECT * FROM my_table ORDER BY id DESC LIMIT 1")
@@ -69,14 +86,17 @@ def api_new_data():
     qr.make(fit=True)
     img = qr.make_image(fill_color="black", back_color="white")
     img.save(f"{qr_file_path}/{ticket_id}.png")
-    return redirect("/preview/"+ticket_id)
+    if mode == "js":
+        return redirect("/preview/" + ticket_id)
+    elif mode == "api":
+        return jsonify(ticket_id)
 
 
 @app.route("/preview/<url>")
 def preview(url):
     file_path = qr_file_path + "/" + url + ".png"
     img_path = url + "/dw"
-    ticket_name = "チケット名:"+url
+    ticket_name = "チケット名:" + url
     if os.path.exists(file_path):
         return render_template("preview.html", qr_path=img_path,
                                download_path=img_path, ticket_name=ticket_name)
@@ -92,9 +112,10 @@ def preview_dw(url):
     image_path = qr_file_path + "/" + url + ".png"
     return send_file(image_path, mimetype="image/png", as_attachment=True)
 
+
 @app.route("/welcome")
 def welcome():
-    return render_template("welcome.html",qr_msg=qr_msg)
+    return render_template("welcome.html", qr_msg=qr_msg)
 
 
 @app.route("/status_update", methods=["POST"])
@@ -107,7 +128,7 @@ def status_update():
     cursor.execute("SELECT * FROM my_table WHERE ticket_id = ?", (ticket_id,))
     result = cursor.fetchall()
     if not result:
-        return jsonify({"status": 404, "msg": "チケットが見つかりませんでした","data":""})
+        return jsonify({"status": 404, "msg": "チケットが見つかりませんでした", "data": ""})
     conn = sqlite3.connect(db_path)
     cursor = conn.cursor()
     status_mapping = {
@@ -122,7 +143,8 @@ def status_update():
 
     conn.commit()
     conn.close()
-    return jsonify({"status": 200, "msg": msg,"data":result})
+    return jsonify({"status": 200, "msg": msg, "data": result})
+
 
 @app.route("/view")
 def view():
@@ -131,6 +153,8 @@ def view():
     cursor.execute("SELECT * FROM my_table")
     result = cursor.fetchall()
     conn.close()
-    return render_template("view.html",table_data=result )
+    return render_template("view.html", table_data=result)
+
+
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=7400)
