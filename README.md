@@ -1,5 +1,5 @@
 # 入退場管理システム(TicketSystem)
-<img src="https://repository-images.githubusercontent.com/702109092/f2e6a396-99cc-4876-8fc1-7b09271af81f">  
+<img src="https://repository-images.githubusercontent.com/702109092/4ba2b32d-492b-4261-8f17-a6344f34bb58">  
 
 ## 目次
 
